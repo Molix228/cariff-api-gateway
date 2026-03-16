@@ -9,7 +9,7 @@ import {
   LoginUserDto,
   LoginUserResponse,
   RegisteredUserResponse,
-} from '../dto';
+} from './dto';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Authentication')

@@ -8,7 +8,7 @@ import {
 import { ClientKafka } from '@nestjs/microservices';
 import { plainToInstance } from 'class-transformer';
 import { firstValueFrom, lastValueFrom } from 'rxjs';
-import { UpdateUserDto } from 'src/dto';
+import { UpdateUserDto } from './dto';
 
 @Injectable()
 export class UserService implements OnModuleInit {
