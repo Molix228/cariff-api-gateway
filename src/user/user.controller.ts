@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { GetUserResponseDto, UpdateUserDto } from 'src/dto';
+import { GetUserResponseDto, UpdateUserDto } from './dto';
 import {
   ApiBody,
   ApiOperation,

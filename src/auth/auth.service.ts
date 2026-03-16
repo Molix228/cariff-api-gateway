@@ -11,9 +11,12 @@ import {
 import { ClientKafka } from '@nestjs/microservices';
 import { plainToInstance } from 'class-transformer';
 import { firstValueFrom, lastValueFrom } from 'rxjs';
-import { CreateUserDto } from 'src/dto/requests/create-user.dto';
-import { LoginUserDto } from 'src/dto/requests/login-user.dto';
-import { LoginUserResponse, RegisteredUserResponse } from '../dto';
+import {
+  CreateUserDto,
+  LoginUserDto,
+  LoginUserResponse,
+  RegisteredUserResponse,
+} from './dto';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
