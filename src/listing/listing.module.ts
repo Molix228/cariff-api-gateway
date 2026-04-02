@@ -1,43 +1,20 @@
 import { Module } from '@nestjs/common';
 import { ListingController } from './listing.controller';
-import { ClientsModule, Transport } from '@nestjs/microservices';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ClientsModule } from '@nestjs/microservices';
 import { ListingService } from './listing.service';
 import { AuthModule } from 'src/auth/auth.module';
-import { Partitioners } from 'kafkajs';
 import { UploadModule } from 'src/upload/upload.module';
+import { createKafkaClientConfig } from 'src/configs/kafka-client.factory';
 
 @Module({
   imports: [
     UploadModule,
     AuthModule,
     ClientsModule.registerAsync([
-      {
+      createKafkaClientConfig({
         name: 'LISTING_SERVICE',
-        imports: [ConfigModule],
-        useFactory: (configService: ConfigService) => ({
-          transport: Transport.KAFKA,
-          options: {
-            client: {
-              clientId:
-                'listing-service-client-' +
-                Math.random().toString(36).substring(7),
-              brokers: [configService.get<string>('KAFKA_BROKER') || ''],
-              connectionTimeout: 3000,
-              requestTimeout: 25000,
-            },
-            consumer: {
-              groupId: 'api-gateway-listing-consumer',
-              sessionTimeout: 30000,
-              heartbeatInterval: 3000,
-            },
-            producer: {
-              createPartitioner: Partitioners.LegacyPartitioner,
-            },
-          },
-        }),
-        inject: [ConfigService],
-      },
+        groupId: 'api-gateway-listing-consumer',
+      }),
     ]),
   ],
   controllers: [ListingController],
