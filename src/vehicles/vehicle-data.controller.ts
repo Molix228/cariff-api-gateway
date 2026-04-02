@@ -2,7 +2,6 @@ import { Controller, Get, Query } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { DefaultQueryDto } from './dto/search/default.query.dto';
 import { MakesResponseDto } from './dto/car_makes/makes.response.dto';
-// import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { VehicleDataService } from './vehicle-data.service';
 import { GetModelsQueryDto } from './dto/car_models/get-models.query.dto';
 import { ModelsResponseDto } from './dto/car_models/models.response.dto';
@@ -26,7 +25,6 @@ export class VehicleDataController {
     description: 'Makes retrieved successfully.',
   })
   @Get('makes')
-  // @UseGuards(JwtAuthGuard)
   async getMakes(@Query() query: DefaultQueryDto): Promise<MakesResponseDto> {
     return await this.vehicleDataService.getMakes(query);
   }
@@ -45,7 +43,6 @@ export class VehicleDataController {
     description: 'Models retrieved successfully.',
   })
   @Get('models')
-  // @UseGuards(JwtAuthGuard)
   async getModels(
     @Query() query: GetModelsQueryDto,
   ): Promise<ModelsResponseDto> {
