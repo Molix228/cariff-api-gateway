@@ -6,6 +6,7 @@ import { UploadModule } from './upload/upload.module';
 import { UserModule } from './user/user.module';
 import { HealthModule } from './health/health.module';
 import { VehicleDataModule } from './vehicles/vehicle-data.module';
+import { FavouritesModule } from './favourites/favourites.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { VehicleDataModule } from './vehicles/vehicle-data.module';
     ListingModule,
     UserModule,
     VehicleDataModule,
+    FavouritesModule,
   ],
   controllers: [],
   providers: [],
