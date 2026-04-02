@@ -29,6 +29,10 @@ export class ListingService implements OnModuleInit {
     this.listingClient.subscribeToResponseOf('listing.insert-models-by-make');
     this.listingClient.subscribeToResponseOf('vehicle-data.get-makes');
     this.listingClient.subscribeToResponseOf('vehicle-data.get-models');
+    this.listingClient.subscribeToResponseOf('favourites.get-favourites-ids');
+    this.listingClient.subscribeToResponseOf('favourites.get-favourites');
+    this.listingClient.subscribeToResponseOf('favourites.add-favourite');
+    this.listingClient.subscribeToResponseOf('favourites.remove-favourite');
 
     await this.listingClient.connect();
   }
