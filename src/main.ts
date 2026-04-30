@@ -21,7 +21,7 @@ async function bootstrap() {
     }),
   );
   app.enableCors({
-    origin: ['http://localhost:3000', 'https://auto24-frontend.vercel.app'],
+    origin: ['http://localhost:3000', 'https://cariff.com'],
     methods: 'GET, POST, PUT, DELETE, HEAD, PATCH',
     credentials: true,
   });
