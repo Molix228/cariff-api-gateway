@@ -4,6 +4,8 @@ import { AuthService } from './auth.service';
 import { ClientsModule } from '@nestjs/microservices';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { createKafkaClientConfig } from 'src/configs/kafka-client.factory';
+import { ApiOrServiceTokenGuard } from './guards/api-or-service-token.guard';
+import { ServiceTokenGuard } from './guards/service-token.guard';
 
 @Module({
   imports: [
@@ -15,7 +17,17 @@ import { createKafkaClientConfig } from 'src/configs/kafka-client.factory';
     ]),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtAuthGuard],
-  exports: [AuthService, JwtAuthGuard],
+  providers: [
+    AuthService,
+    JwtAuthGuard,
+    ServiceTokenGuard,
+    ApiOrServiceTokenGuard,
+  ],
+  exports: [
+    AuthService,
+    JwtAuthGuard,
+    ServiceTokenGuard,
+    ApiOrServiceTokenGuard,
+  ],
 })
 export class AuthModule {}

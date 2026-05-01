@@ -97,9 +97,7 @@ export class UploadService {
 
       try {
         await this.s3.send(command);
-        return {
-          url: `https://${bucket}.s3.${this.configService.get<string>('AWS_REGION')}.amazonaws.com/${key}`,
-        };
+        return `https://${bucket}.s3.${this.configService.get<string>('AWS_REGION')}.amazonaws.com/${key}`;
       } catch (err) {
         throw new InternalServerErrorException('Failed to upload image', err);
       }

@@ -18,6 +18,9 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { ApiOrServiceTokenGuard } from 'src/auth/guards/api-or-service-token.guard';
+
+const SYSTEM_USER_ID = '00000000-0000-0000-0000-000000000000';
 
 @ApiTags('Images Upload')
 @Controller('upload')
@@ -61,10 +64,11 @@ export class UploadController {
     description: 'Array of image files to upload',
   })
   @ApiOkResponse({ description: 'Images uploaded successfully.' })
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(ApiOrServiceTokenGuard)
   @Post('images')
   @UseInterceptors(FilesInterceptor('files'))
   async uploadFiles(@Req() req, @UploadedFiles() files: Express.Multer.File[]) {
-    return this.uploadService.uploadImages(files, req.user.userId);
+    const userId = req.user ? req.user.userId : SYSTEM_USER_ID;
+    return this.uploadService.uploadImages(files, userId);
   }
 }
