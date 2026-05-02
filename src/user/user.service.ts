@@ -8,7 +8,7 @@ import {
 import { ClientKafka } from '@nestjs/microservices';
 import { plainToInstance } from 'class-transformer';
 import { firstValueFrom, lastValueFrom } from 'rxjs';
-import { UpdateUserDto } from 'src/dto';
+import { UpdateUserDto } from './dto';
 
 @Injectable()
 export class UserService implements OnModuleInit {
@@ -47,11 +47,11 @@ export class UserService implements OnModuleInit {
     return user;
   }
 
-  async updateUser(id: string, updateUserDto: UpdateUserDto) {
+  async updateUser(userId: string, updateUserDto: UpdateUserDto) {
     try {
       const updateUserPayload = plainToInstance(Object, updateUserDto);
       const payload = {
-        id: id,
+        id: userId,
         ...updateUserPayload,
       };
       const updatedUser = await lastValueFrom(

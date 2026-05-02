@@ -3,21 +3,16 @@ import {
   Controller,
   Delete,
   Get,
-  Param,
-  Post,
   Put,
   Req,
-  Res,
   UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { GetUserResponseDto, UpdateUserDto } from 'src/dto';
-import { Response } from 'express';
+import { GetUserResponseDto, UpdateUserDto } from './dto';
 import {
   ApiBody,
   ApiOperation,
-  ApiParam,
   ApiQuery,
   ApiResponse,
   ApiTags,
@@ -56,12 +51,6 @@ export class UserController {
     summary: 'Update user profile',
     description: 'Updates the user profile',
   })
-  @ApiParam({
-    name: 'id',
-    required: true,
-    description: 'The ID of the user to update',
-    example: '123e4567-e89b-12d3-a456-426614174000',
-  })
   @ApiBody({
     type: UpdateUserDto,
     description: 'The data to update the user profile',
@@ -72,12 +61,13 @@ export class UserController {
     description: 'User profile updated successfully.',
   })
   @UseGuards(JwtAuthGuard)
-  @Put('update_profile/:id')
-  async update_user(
-    @Param('id') id: string,
-    @Body() updateUserDto: UpdateUserDto,
-  ) {
-    const updatedUser = await this.userService.updateUser(id, updateUserDto);
+  @Put('update_profile')
+  async update_user(@Req() req, @Body() updateUserDto: UpdateUserDto) {
+    const { userId } = req.user;
+    const updatedUser = await this.userService.updateUser(
+      userId,
+      updateUserDto,
+    );
     return updatedUser;
   }
 

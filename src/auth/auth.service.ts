@@ -1,5 +1,7 @@
 import {
   ConflictException,
+  HttpException,
+  HttpStatus,
   Inject,
   Injectable,
   InternalServerErrorException,
@@ -9,9 +11,12 @@ import {
 import { ClientKafka } from '@nestjs/microservices';
 import { plainToInstance } from 'class-transformer';
 import { firstValueFrom, lastValueFrom } from 'rxjs';
-import { CreateUserDto } from 'src/dto/requests/create-user.dto';
-import { LoginUserDto } from 'src/dto/requests/login-user.dto';
-import { LoginUserResponse, RegisteredUserResponse } from '../dto';
+import {
+  CreateUserDto,
+  LoginUserDto,
+  LoginUserResponse,
+  RegisteredUserResponse,
+} from './dto';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
@@ -57,11 +62,22 @@ export class AuthService implements OnModuleInit {
   }
 
   async login(loginUserDto: LoginUserDto): Promise<LoginUserResponse> {
-    const loginPayload = plainToInstance(Object, loginUserDto);
-    const response = await lastValueFrom(
-      this.authClient.send('auth.login', loginPayload),
-    );
-    return response;
+    try {
+      const loginPayload = plainToInstance(Object, loginUserDto);
+      return await lastValueFrom(
+        this.authClient.send('auth.login', loginPayload),
+      );
+    } catch (error) {
+      const status =
+        [error?.statusCode, error?.status, error?.response?.statusCode].find(
+          Number.isInteger,
+        ) || HttpStatus.INTERNAL_SERVER_ERROR;
+
+      const message =
+        error?.message || error?.response?.message || 'Internal server error';
+
+      throw new HttpException(message, status);
+    }
   }
 
   async validateToken(token: string) {

@@ -29,6 +29,10 @@ export class ListingService implements OnModuleInit {
     this.listingClient.subscribeToResponseOf('listing.insert-models-by-make');
     this.listingClient.subscribeToResponseOf('vehicle-data.get-makes');
     this.listingClient.subscribeToResponseOf('vehicle-data.get-models');
+    this.listingClient.subscribeToResponseOf('favourites.get-favourites-ids');
+    this.listingClient.subscribeToResponseOf('favourites.get-favourites');
+    this.listingClient.subscribeToResponseOf('favourites.add-favourite');
+    this.listingClient.subscribeToResponseOf('favourites.remove-favourite');
 
     await this.listingClient.connect();
   }
@@ -86,7 +90,7 @@ export class ListingService implements OnModuleInit {
     }
   }
 
-  async deleteAd(id: string, userId: string): Promise<void> {
+  async deleteAd(id: string, userId: string): Promise<boolean> {
     try {
       const listing = await lastValueFrom(
         this.listingClient

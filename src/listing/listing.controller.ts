@@ -62,7 +62,8 @@ export class ListingController {
   @UseGuards(JwtAuthGuard)
   @Delete('delete_ad/:id')
   async deleteAd(@Param('id') id: string, @Req() req) {
-    return this.listingService.deleteAd(id, req.user.userId);
+    const { userId } = req.user;
+    return this.listingService.deleteAd(id, userId);
   }
 
   @UseGuards(JwtAuthGuard)
