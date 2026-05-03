@@ -22,6 +22,7 @@ export class UserService implements OnModuleInit {
       this.authClient.subscribeToResponseOf('user.deletebyid');
       this.authClient.subscribeToResponseOf('user.update-profile');
 
+      this.authClient.subscribeToResponseOf('users.get-info-map');
       await this.authClient.connect();
     } catch (error) {
       console.error('❌ UserService: ClientKafka connection ERROR:', error);
@@ -36,6 +37,14 @@ export class UserService implements OnModuleInit {
     );
     if (!user) throw new InternalServerErrorException('User not found');
     return user;
+  }
+
+  async getUsersInfoMap(userIds: string[]): Promise<Record<string, any>> {
+    if (!userIds.length) return {};
+
+    return lastValueFrom(
+      this.authClient.send('users.get-info-map', { userIds }),
+    );
   }
 
   async deleteUser(id: string) {

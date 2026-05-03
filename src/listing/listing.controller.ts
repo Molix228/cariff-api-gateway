@@ -23,6 +23,12 @@ class ListingResponseObject {
   data: PaginatedResponseDto<ListingResponseDto>;
 }
 
+class SingleListingResponseObject {
+  success: boolean;
+  status: number;
+  data: ListingResponseDto;
+}
+
 @ApiTags('Listings Management')
 @Controller('listing')
 export class ListingController {
@@ -46,6 +52,27 @@ export class ListingController {
     @Query() query: GetListingsDto,
   ): Promise<ListingResponseObject> {
     const res = await this.listingService.getListings(query);
+    return {
+      success: true,
+      status: 200,
+      data: res,
+    };
+  }
+
+  @ApiOperation({
+    summary: 'Get listing details',
+    description: 'Retrieves full information about a specific listing',
+  })
+  @ApiResponse({
+    status: 200,
+    type: PaginatedResponseDto,
+    description: 'Detailed listing information retrieved successfully.',
+  })
+  @Get('details/:id')
+  async getListingDetails(
+    @Param('id') id: string,
+  ): Promise<SingleListingResponseObject> {
+    const res = await this.listingService.getListingDetails(id);
     return {
       success: true,
       status: 200,

@@ -5,11 +5,13 @@ import { ListingService } from './listing.service';
 import { AuthModule } from 'src/auth/auth.module';
 import { UploadModule } from 'src/upload/upload.module';
 import { createKafkaClientConfig } from 'src/configs/kafka-client.factory';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
   imports: [
     UploadModule,
     AuthModule,
+    UserModule,
     ClientsModule.registerAsync([
       createKafkaClientConfig({
         name: 'LISTING_SERVICE',
