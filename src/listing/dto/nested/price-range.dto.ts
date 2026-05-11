@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsInt, IsOptional, min, Min } from 'class-validator';
+import { IsInt, IsOptional, Min } from 'class-validator';
 import { IsGreaterThan } from 'src/validators/greater.decorator';
 
 export class PriceRangeDto {
