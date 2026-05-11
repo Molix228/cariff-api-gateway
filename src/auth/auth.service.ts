@@ -32,6 +32,7 @@ export class AuthService implements OnModuleInit {
     this.authClient.subscribeToResponseOf('auth.validate-refresh-token');
     this.authClient.subscribeToResponseOf('auth.refresh-access-token');
     this.authClient.subscribeToResponseOf('auth.revoke-token');
+    this.authClient.subscribeToResponseOf('auth.verify-email');
 
     await this.authClient.connect();
   }
@@ -108,6 +109,10 @@ export class AuthService implements OnModuleInit {
     } catch (error) {
       console.error('[API_GW] Revoke Token Error:', error);
     }
+  }
+
+  async verifyEmail(data: { email: string; code: string }) {
+    return await lastValueFrom(this.authClient.send('auth.verify-email', data));
   }
 
   async validateRefreshToken(token: string) {
