@@ -2,12 +2,13 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
-import * as express from 'express';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    rawBody: true,
+  });
   const globalPrefix = 'api';
   const port = process.env.PORT || 3333;
   app.setGlobalPrefix(globalPrefix);
@@ -27,7 +28,6 @@ async function bootstrap() {
     credentials: true,
   });
   app.use(cookieParser());
-  app.use(express.text({ type: ['text/plan', 'application/json'] }));
 
   const config = new DocumentBuilder()
     .setTitle('Cariff API Gateway')
