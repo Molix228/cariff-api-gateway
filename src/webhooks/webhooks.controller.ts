@@ -1,4 +1,4 @@
-import { Controller, Post, Req, Res, Logger } from '@nestjs/common';
+import { Controller, Post, Req, Res, Logger, Body } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { WebhooksService } from './webhooks.service';
 
@@ -9,10 +9,12 @@ export class WebhooksController {
   constructor(private readonly webhooksService: WebhooksService) {}
 
   @Post('aws-sns')
-  async handleSnsWebhook(@Req() req: Request, @Res() res: Response) {
+  async handleSnsWebhook(@Body() body: any, @Res() res: Response) {
     try {
-      const body =
-        typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+      if (!body || !body.Type) {
+        this.logger.warn('Received invalid webhook payload');
+        return res.status(200).send('Ignored');
+      }
 
       await this.webhooksService.handleAwsSns(body);
 
