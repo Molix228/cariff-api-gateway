@@ -1,5 +1,5 @@
 import { Controller, Post, Req, Res, Logger } from '@nestjs/common';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { WebhooksService } from './webhooks.service';
 
 @Controller('webhooks')
@@ -9,19 +9,36 @@ export class WebhooksController {
   constructor(private readonly webhooksService: WebhooksService) {}
 
   @Post('aws-sns')
-  async handleSnsWebhook(@Req() req: any, @Res() res: Response) {
+  async handleSnsWebhook(@Req() req: Request, @Res() res: Response) {
     try {
-      let parsedBody = req.body;
+      let parsedBody;
 
-      if (req.rawBody && Object.keys(parsedBody).length === 0) {
-        const rawString = req.rawBody.toString('utf8');
-        parsedBody = JSON.parse(rawString);
+      if (typeof req.body === 'string' && req.body.length > 0) {
+        parsedBody = JSON.parse(req.body);
+      } else if (
+        typeof req.body === 'object' &&
+        req.body !== null &&
+        Object.keys(req.body).length > 0
+      ) {
+        parsedBody = req.body;
+      } else {
+        const rawText = await new Promise<string>((resolve, reject) => {
+          let data = '';
+          req.on('data', (chunk) => {
+            data += chunk.toString();
+          });
+          req.on('end', () => resolve(data));
+          req.on('error', (err) => reject(err));
+        });
+
+        if (rawText) {
+          parsedBody = JSON.parse(rawText);
+        }
       }
 
       if (!parsedBody || !parsedBody.Type) {
         this.logger.warn(
-          'Received invalid webhook payload. Payload: ' +
-            JSON.stringify(parsedBody),
+          `Received invalid webhook payload. Parsed: ${JSON.stringify(parsedBody)}`,
         );
         return res.status(200).send('Ignored');
       }
