@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
+import * as express from 'express';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
@@ -26,10 +27,11 @@ async function bootstrap() {
     credentials: true,
   });
   app.use(cookieParser());
+  app.use(express.text({ type: ['text/plan', 'application/json'] }));
 
   const config = new DocumentBuilder()
-    .setTitle('Auto24 API Gateway')
-    .setDescription('API documentation for Auto24')
+    .setTitle('Cariff API Gateway')
+    .setDescription('API documentation for Cariff')
     .setVersion('1.0')
     .build();
 

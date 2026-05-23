@@ -26,7 +26,6 @@ export class UserService implements OnModuleInit {
       await this.authClient.connect();
     } catch (error) {
       console.error('❌ UserService: ClientKafka connection ERROR:', error);
-      // Бросьте ошибку, чтобы остановить приложение, если клиент не работает
       throw new Error('Failed to connect to Kafka via AUTH_SERVICE.');
     }
   }
@@ -73,5 +72,13 @@ export class UserService implements OnModuleInit {
         err.message,
       );
     }
+  }
+
+  emitEmailBounced(email: string) {
+    this.authClient.emit('user.email.bounced', email);
+  }
+
+  emitEmailComplaint(email: string) {
+    this.authClient.emit('user.email.complaint', email);
   }
 }

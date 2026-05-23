@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { HealthModule } from './health/health.module';
 import { VehicleDataModule } from './vehicles/vehicle-data.module';
 import { FavouritesModule } from './favourites/favourites.module';
+import { WebhooksModule } from './webhooks/webhooks.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { FavouritesModule } from './favourites/favourites.module';
     UserModule,
     VehicleDataModule,
     FavouritesModule,
+    WebhooksModule,
   ],
   controllers: [],
   providers: [],
