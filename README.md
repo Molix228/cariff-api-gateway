@@ -23,7 +23,7 @@
 
 ## Description
 
-[SWAGGER-DOCS] http://localhost:3333/api/docs API DOCS
+[SWAGGER-DOCS] https://api.cariff.com/api/docs API DOCS
 
 ## Project setup
 
