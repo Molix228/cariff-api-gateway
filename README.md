@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://cariff.com" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Cariff Logo" /></a>
+  <a href="https://cariff.com" target="blank"><iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://embed.figma.com/design/EzqwmVtcIMLhXIgqY4iPJc/Untitled?node-id=0-1&embed-host=share" allowfullscreen></iframe></a>
 </p>
 <h1 align="center">Cariff API Gateway</h1>
 
